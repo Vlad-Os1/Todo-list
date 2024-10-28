@@ -7,6 +7,7 @@ module.exports = merge(common, {
   devServer: {
     static: './dist',
     hot: true,
+    watchFiles: ['src/template.html'],
     port: 8081,
     client: {
       overlay: {
