@@ -1,7 +1,6 @@
 import Todo from './todo.js'
 import List from './list.js'
 import Task from './task.js'
-import { lightFormatters } from 'date-fns';
 
 export default class Storage {
   static saveTodoList(data) {
