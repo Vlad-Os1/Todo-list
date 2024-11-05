@@ -228,7 +228,7 @@ h1, h2, p, span {
   height: 40px;
 }
 
-.add-task-modal {
+.modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -242,7 +242,7 @@ h1, h2, p, span {
   width: 300px;
 }
 
-.add-task-modal.active {
+.modal.active {
   transform: translate(-50%, -50%) scale(1);
 }
 
@@ -290,7 +290,7 @@ h1, h2, p, span {
 
 
 
-.overlay {
+#overlay {
   position: fixed;
   opacity: 0;
   transition: 200ms ease-in-out;
@@ -303,7 +303,7 @@ h1, h2, p, span {
   z-index: 10;
 }
 
-.overlay.active {
+#overlay.active {
   opacity: 1;
   pointer-events: all;
 }

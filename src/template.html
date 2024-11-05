@@ -73,16 +73,16 @@
               </div>
             </div>
           </div>
-          <button class="add-task-button">
+          <button class="add-task-button" data-modal-target="#modal">
             <i class="add-task-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></i>
             <span>Add Task</span>
           </button>
         </div>
       </div>
-      <div class="add-task-modal">        
+      <div class="modal" id="modal">        
         <div class="modal-header">
           <h2 class="modal-header-title">New Task</h2>
-          <i class="close-modal-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path></svg></i>
+          <i class="close-modal-icon" data-close-button><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path></svg></i>
         </div>
         <div class="modal-content">
           <form action="" id="add-task-form">
@@ -98,7 +98,7 @@
           </form>
         </div>        
       </div>
-      <div class="overlay"></div>
+      <div id="overlay"></div>
     </div>
   </body>
 </html>
