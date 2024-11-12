@@ -1,41 +1,37 @@
 export default class Modal {
-  constructor(){
-    this.overlay = document.getElementById('overlay');
-    this.init();
-  }
-  
-  init() {
+  static init() {
+    const overlay = document.getElementById('overlay');
     const openModalButtons = document.querySelectorAll('[data-modal-target]')
     const closeModalButtons = document.querySelectorAll('[data-close-button]')
 
     openModalButtons.forEach(button => {
       button.addEventListener('click', () => {
         const modal = document.querySelector(button.dataset.modalTarget);
-        this.openModal(modal);
+        Modal.openModal(modal);
       })
     })
-    this.overlay.addEventListener('click', () => {
+    overlay.addEventListener('click', () => {
       const modals = document.querySelectorAll('.modal.active')
       modals.forEach(modal => {
-        this.closeModal(modal);
+        Modal.closeModal(modal);
       })
     })
     closeModalButtons.forEach(button => {
       button.addEventListener('click', () => {
         const modal = button.closest('.modal')
-        this.closeModal(modal)
+        Modal.closeModal(modal)
       })
     })
   }
-  openModal(modal) {
+  static openModal(modal) {
     if (modal == null) return
     modal.classList.add('active')
-    this.overlay.classList.add('active')
+    overlay.classList.add('active')
   }
 
-  closeModal(modal) {
+  static closeModal(modal) {
     if (modal == null) return
     modal.classList.remove('active')
-    this.overlay.classList.remove('active')
+    overlay.classList.remove('active')
   }
 }
