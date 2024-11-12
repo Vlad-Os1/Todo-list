@@ -39,6 +39,18 @@ export default class List {
     this.tasks = this.tasks.filter((task) => task.name !== taskName);
   }
 
+  setTaskPriority(taskName, priority) {
+    return this.getTask(taskName).setPriority(priority);
+  }
+
+  setTaskDescription(taskName, description) {
+    return this.getTask(taskName).setDescription(description);
+  }
+
+  setTaskName(taskName, newTaskName) {
+    return this.getTask(taskName).setName(newTaskName);
+  }
+
   getTodayTasks() {
     return this.tasks.filter((task) => isToday(new Date(task.getDueDate())));
   }

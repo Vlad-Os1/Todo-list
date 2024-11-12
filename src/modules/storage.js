@@ -44,7 +44,25 @@ export default class Storage {
     todoList.getList(listName).deleteTask(taskName);
     Storage.saveTodoList(todoList);
   }
+  
+  static updateTaskName(listName, taskName, newTaskName){
+    const todoList = Storage.getTodoList();
+    todoList.getList(listName).setTaskName(taskName, newTaskName);
+    Storage.saveTodoList(todoList);
+  }
 
+  static updateTaskDescription(listName, taskName, description){
+    const todoList = Storage.getTodoList();
+    todoList.getList(listName).setTaskDescription(taskName, description);
+    Storage.saveTodoList(todoList);
+  }
+
+  static updateTaskPriority(listName, taskName, priority){
+    const todoList = Storage.getTodoList();
+    todoList.getList(listName).setTaskPriority(taskName, priority);
+    Storage.saveTodoList(todoList);
+  }
+  
   static updateTodayList() {
     const todoList = Storage.getTodoList();
     todoList.updateTodayList();
