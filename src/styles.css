@@ -32,6 +32,7 @@ p, h1, h2, h3, h4, h5, h6 {
   --header-button-background-color-hover: rgb(236, 236, 236);
   --left-panel-background-color: rgb(247, 247, 247);
   --left-panel-button-background-color-hover: rgb(211, 211, 211);
+  --right-panel-background-color: rgb(255, 255, 255);
   --task-background-color-hover: rgb(240, 240, 240);
   --modal-background-color: rgb(240, 240, 240);
   --button-background-color: ;
@@ -42,10 +43,16 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-body.darkmode {
+body.dark-theme {
   --primary-color: rgb(255, 255, 255);
   --background-color: rgba(7, 7, 7, 0.9);
+  --header-button-background-color-hover: rgb(63, 63, 63);
+  --left-panel-background-color: rgb(26, 26, 26);
+  --left-panel-button-background-color-hover: rgb(32, 32, 32);
+  --right-panel-background-color: rgb(19, 19, 19);
+  --task-background-color-hover: rgb(32, 32, 32);;
   --modal-background-color: rgb(20, 20, 20);
+  --modal-error-msg-color: rgb(255, 70, 70);
 }
 
 button {
@@ -97,7 +104,7 @@ h1, h2, p, span {
 .menu-toggle svg path{
   stroke: var(--primary-color);
 }
- 
+
 .logo-container {
   display: flex;
   align-items: center;
@@ -121,39 +128,45 @@ h1, h2, p, span {
   display: none;
 }
 
-.darkmode #theme-toggle svg:first-child {
+.dark-theme #theme-toggle svg:first-child {
   display: none;
 }
 
-.darkmode #theme-toggle svg:last-child {
+.dark-theme #theme-toggle svg:last-child {
   display: block;
 }
 
 .content {
-  display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-template-rows: 1fr 1fr;
+  display: flex;
   height: 100%;
 }
 
 .left-panel {
-  grid-column: 1 / 2;
-  grid-row: 1 / 3;
+  flex-basis: 0;
+  background-color: var(--left-panel-background-color);
+  transition: flex-basis 400ms ease-out;
+}
+
+.left-panel.active {
+  flex-basis: max(20%, 230px);
+}
+
+
+.left-panel-content {
   padding: 2rem 0.5rem 0 2rem;
   font-weight: 300;
-  background-color: var(--left-panel-background-color);
 }
 
 .left-panel button:hover {
   background-color: var(--left-panel-button-background-color-hover);
 }
 
-.main-lists, .user-lists, .dropdown-content, .list-content {
+.main-lists-section, .user-lists-section, .dropdown-content, .list-content, .user-lists{
   display: flex;
   flex-direction: column; 
 }
 
-.main-lists button, .user-lists button {
+.main-lists-section button, .user-lists-section button {
   display: flex;
   min-width: 170px;
   font-size: 1.25rem;
@@ -161,27 +174,50 @@ h1, h2, p, span {
   align-items: center;
 }
 
-.main-lists button span, .user-lists button span {
+.main-lists-section button span, .user-lists-section button span {
   margin-left: 7px;
 }
 
 .caret {
+  transform: scale(1, -1);
   margin-left: auto;
-  transition: 500ms;
+  transition: 400ms;
 }
 
-.caret.collapsed {
-  transform: rotateX(180deg);
+.dropdown.active .caret {
+  transform: scale(1, 1);
 }
 
 .dropdown-content {
   padding: 5px 0 0 1rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 400ms ease;
 }
 
+.dropdown-content.active {
+  max-height: 500px;
+}
+
+#delete-list {
+  display: none;
+  margin-left: auto;
+}
+
+.user-list:hover #delete-list {
+  display: block;
+}
+
+.dropdown-content button {
+  font-size: 18px;
+}
 
 .right-panel {
-  grid-column: 2 / 3;
-  grid-row: 1 / 3;
+  flex-grow: 1;
+  background-color: var(--right-panel-background-color);
+}
+
+.right-panel-content {
   padding: 2rem;
   margin: 0 auto;
   width: min(900px, 100%);
@@ -257,19 +293,24 @@ h1, h2, p, span {
   cursor: pointer;
 }
 
-#add-task-form {
+.modal-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-#add-task-form input, #add-task-form select {
+.modal-form input, .modal-form select {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #cacaca ;
   outline: none;
   color: var(--primary-color);
   background-color: var(--background-color);
+}
+
+.modal-error-msg {
+  text-align: center;
+  color: var(--modal-error-msg-color);
 }
 
 #modal-submit-btn {
@@ -308,30 +349,13 @@ h1, h2, p, span {
   pointer-events: all;
 }
 
-
-
-
-
-
 @media(max-width: 570px) {
-  .left-panel, .right-panel {
-    grid-column: 1 / 3;
+  .content {
+    flex-direction: column;
   }
-
-  .left-panel {
-    grid-row: 1 / 2;
-  }
-
-  .right-panel {
-    grid-row: 2 / 3;
-  }
-
-  /* .main-lists button, .user-lists button {
-    justify-content: center;
-  } */
-
-  .caret {
-    margin-left: 10px;
+  
+  .left-panel.active {
+    flex-basis: auto;
   } 
 
   .list-task {
