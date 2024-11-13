@@ -5,7 +5,7 @@ export default class Todo {
     this.lists = [];
     this.addList(new List('All Tasks'));
     this.addList(new List('Today')); 
-    this.addList(new List('Week'))
+    this.addList(new List('This week'))
   }
 
   getLists() {
