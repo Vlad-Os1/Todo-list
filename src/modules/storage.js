@@ -5,6 +5,19 @@ import Task from './task.js'
 export default class Storage {
   static saveTodoList(data) {
     localStorage.setItem('todoList', JSON.stringify(data));
+    console.log(data);
+  }
+
+  static saveSelectedList(list) {
+    localStorage.setItem('selectedList', JSON.stringify(list));
+  }
+
+  static getSelectedList() {
+    const savedList = localStorage.getItem('selectedList');
+    if (savedList) {
+      return savedList
+    }
+    return null; 
   }
   
   static getTodoList() {

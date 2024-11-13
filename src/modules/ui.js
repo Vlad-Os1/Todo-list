@@ -18,11 +18,12 @@ export default class UI {
 
   // Loading methods
   static loadLists() {
+    UI.clearUserLists();
     Storage.getTodoList().getLists().forEach((list) => {
       if (
         list.name !== 'All Tasks' &&
         list.name !== 'Today' &&
-        list.name !== 'Week'
+        list.name !== 'This week'
       ) {
         UI.createList(list.name);        
       }
@@ -65,12 +66,27 @@ export default class UI {
   
   // Methods for events
   static initializeEventListeners() {
+    // Add list event
     document.querySelector('#add-list-form').addEventListener('submit', UI.handleAddListEvent);
+    // Delete list event
     document.querySelector('.user-lists').addEventListener('click', (event) => {
       if (event.target && event.target.id === 'delete-list') {
         UI.handleDeleteListEvent(event);
       }
     });  
+    
+    // Select list events
+    document.querySelector('.user-lists').addEventListener('click', (event) => {
+      if (event.target && event.target.classList.contains('user-list')) {
+        UI.handleSelectListEvent(event);
+      }
+    });
+    document.querySelector('.main-lists-section').addEventListener('click', (event) => {
+      if (event.target && event.target.classList.contains('main-list')) {
+        UI.handleSelectListEvent(event);
+      }
+    });
+
   }
 
   static handleAddListEvent(event) {
@@ -83,7 +99,6 @@ export default class UI {
     if(!Storage.getTodoList().contains(newList.name)){
       Storage.addList(newList)
       UI.closeAddListErrorMsg();
-      UI.clearUserLists();
       UI.loadLists();
       Modal.closeModal(modal);
 
@@ -99,8 +114,24 @@ export default class UI {
       const listTitle = list.querySelector('span').textContent;
       
       Storage.deleteList(listTitle);
-      UI.clearUserLists();
       UI.loadLists();
+    }
+  }
+
+  static handleSelectListEvent(event) {
+    const list = event.target.closest('.user-list') || event.target.closest('.main-list');
+    if(list) {
+      const listTitle = list.querySelector('span').textContent;
+      UI.setSelectedList(listTitle);
+
+      list.classList.add('selected');
+
+      const allLists = document.querySelectorAll('.user-list, .main-list');
+      allLists.forEach(item => {
+        if (item !== list) {
+          item.classList.remove('selected');
+        }
+      });
     }
   }
 
@@ -141,4 +172,8 @@ export default class UI {
     listsContainer.innerHTML = '';  
   }
 
+  static setSelectedList(listTitle) {
+    const selectedList = Storage.getTodoList().getList(listTitle);
+    Storage.saveSelectedList(selectedList.name);
+  }
 }
