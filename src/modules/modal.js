@@ -1,8 +1,8 @@
 export default class Modal {
   static init() {
     const overlay = document.getElementById('overlay');
-    const openModalButtons = document.querySelectorAll('[data-modal-target]')
-    const closeModalButtons = document.querySelectorAll('[data-close-button]')
+    const openModalButtons = document.querySelectorAll('[data-modal-target]');
+    const closeModalButtons = document.querySelectorAll('[data-close-button]');
 
     openModalButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -18,20 +18,22 @@ export default class Modal {
     })
     closeModalButtons.forEach(button => {
       button.addEventListener('click', () => {
-        const modal = button.closest('.modal')
-        Modal.closeModal(modal)
+        const modal = button.closest('.modal');
+        Modal.closeModal(modal);
       })
     })
   }
   static openModal(modal) {
     if (modal == null) return
-    modal.classList.add('active')
-    overlay.classList.add('active')
+    modal.classList.add('active');
+    overlay.classList.add('active');
   }
 
   static closeModal(modal) {
     if (modal == null) return
-    modal.classList.remove('active')
-    overlay.classList.remove('active')
+    const errorMsg = document.querySelector('#add-list-error-msg');
+    errorMsg.textContent = '';
+    modal.classList.remove('active');
+    overlay.classList.remove('active');
   }
 }
