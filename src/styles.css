@@ -213,12 +213,12 @@ h1, h2, p, span {
   max-height: 500px;
 }
 
-#delete-list {
+.delete-list {
   display: none;
   margin-left: auto;
 }
 
-.user-list:hover #delete-list {
+.user-list:hover .delete-list {
   display: block;
 }
 
