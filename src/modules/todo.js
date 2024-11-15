@@ -35,9 +35,10 @@ export default class Todo {
 
   updateTodayList() {
     let todayList = this.getList('Today');
+    todayList.setTasks([]);
 
     this.lists.forEach(list => {
-      if(list.getName() !== 'Today') {
+      if(list.getName() !== 'All Tasks' && list.getName() !== 'Today' && list.getName() !== 'This week') {
         const todayTasks = list.getTodayTasks();
         todayTasks.forEach(task => todayList.addTask(task))
       }
@@ -45,10 +46,11 @@ export default class Todo {
   }
 
   updateWeekList() {
-    let weekList = this.getList('Week');
+    let weekList = this.getList('This week');
+    weekList.setTasks([]);
 
     this.lists.forEach(list => {
-      if(list.getName() !== 'Week') {
+      if(list.getName() !== 'All Tasks' && list.getName() !== 'Today' && list.getName() !== 'This week') {
         const weekTasks = list.getWeekTasks();
         weekTasks.forEach(task => weekList.addTask(task))
       }
@@ -57,9 +59,10 @@ export default class Todo {
 
   updateAllTasksList() {
     let allTasksList = this.getList('All Tasks')
+    allTasksList.setTasks([]);
 
     this.lists.forEach(list => {
-      if(list.getName() !== 'All Tasks') {    
+      if(list.getName() !== 'All Tasks' && list.getName() !== 'Today' && list.getName() !== 'This week') {    
         list.getTasks().forEach(task => allTasksList.addTask(task))
       }
     });
