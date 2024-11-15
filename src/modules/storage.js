@@ -15,7 +15,7 @@ export default class Storage {
   static getSelectedList() {
     const savedList = localStorage.getItem('selectedList');
     if (savedList) {
-      return savedList
+      return JSON.parse(savedList);
     }
     return null; 
   }
