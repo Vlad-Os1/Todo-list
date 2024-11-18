@@ -27,7 +27,6 @@ export default class List {
   }
 
   addTask(newTask) {
-    if (this.tasks.find((task) => task.getName() === newTask.getName())) return
     this.tasks.push(newTask);
   }
 
@@ -35,8 +34,8 @@ export default class List {
     return this.tasks.some((task) => task.getName() === taskName);
   }
 
-  deleteTask(taskName) {
-    this.tasks = this.tasks.filter((task) => task.name !== taskName);
+  deleteTask(taskId) {
+    this.tasks = this.tasks.filter((task) => task.id !== taskId);
   }
 
   setTaskPriority(taskName, priority) {
