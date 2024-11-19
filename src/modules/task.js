@@ -6,6 +6,7 @@ export default class Task {
     this.dueDate = dueDate;
     this.description = null;
     this.priority = 'low';
+    this.parentList = null;
   }
 
   getName() {
@@ -22,6 +23,22 @@ export default class Task {
 
   setDescription(description) {
     this.description = description;
+  }
+  
+  setParentList(parentListName) {
+    this.parentList = parentListName;
+  }
+
+  getParentList() {
+    return this.parentList;
+  }
+
+  setId() {
+    this.id = `task-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+  }
+
+  getId() {
+    return this.id
   }
 
   getDueDate() {
