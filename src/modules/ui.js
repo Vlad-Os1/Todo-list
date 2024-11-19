@@ -61,29 +61,33 @@ export default class UI {
     UI.clearListTasks();
     UI.clearListAddTaskButton();
 
-    selectedList.getTasks().forEach((task) => {
-      UI.createTask(task.name, task.getFormattedDueDate());
+    let tasks = selectedList.getTasks();
+    if (selectedListName === 'This week') {
+      tasks = tasks.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    }
+  
+    tasks.forEach((task) => {
+      UI.createTask(task.name, task.getFormattedDueDate(), task.getId());
     });
+
     if (selectedListName !== 'All Tasks' && selectedListName !== 'Today' && selectedListName !== 'This week'){  
       UI.initAddTaskButton();
       Modal.init();
     };
   }
 
-  static createTask(taskName, taskDueDate) {
+  static createTask(taskName, taskDueDate, taskId) {
     const taskContainer = document.querySelector('.list-content');
     taskContainer.innerHTML += 
     `
-    <div class="list-content" bis_skin_checked="1">
-      <div class="list-task" bis_skin_checked="1">
-        <div class="task-left-panel" bis_skin_checked="1">
-          <i class="task-check-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg></i>
-          <p>${taskName}</p>
-        </div>
-        <div class="task-right-panel" bis_skin_checked="1">
-          <p class="due-date">${taskDueDate}</p>
-          <i class="close-task-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path></svg></i>
-        </div>
+    <div class="list-task" data-task-id="${taskId}">
+      <div class="task-left-panel">
+        <i class="task-check-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg></i>
+        <p>${taskName}</p>
+      </div>
+      <div class="task-right-panel">
+        <p class="due-date">${taskDueDate}</p>
+        <i class="close-task-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path></svg></i>
       </div>
     </div>
     `
@@ -137,6 +141,13 @@ export default class UI {
     });
     // Add task event
     document.querySelector('#add-task-form').addEventListener('submit', UI.handleAddTaskEvent)
+    // Delete task event
+    document.querySelector('.list-content').addEventListener('click', (event) => {
+      const deleteTaskButton = event.target.closest('.close-task-btn');
+      if (deleteTaskButton) {
+        UI.handleDeleteTaskEvent(event);
+      }
+    });
   }
 
   static handleAddListEvent(event) {
@@ -193,17 +204,47 @@ export default class UI {
     const titleValue = title.value.trim();
     const dueDate = event.target.elements['new-task-due-date'];
     const dueDateValue = dueDate.value;
+    
+    const description = event.target.elements['new-task-description'];
+    const descriptionValue = description.value;
+    const priority = event.target.elements['priority-selector'];
+    const priorityValue = priority.value;
 
     const selectedListName = Storage.getSelectedList();
     const todoList = Storage.getTodoList();
 
     const newTask = new Task(titleValue, dueDateValue);
+    newTask.setDescription(descriptionValue);
+    newTask.setPriority(priorityValue);
+    newTask.setParentList(selectedListName);
+    newTask.setId();
 
     todoList.getList(selectedListName).addTask(newTask);
     Storage.saveTodoList(todoList);
     UI.updateMainLists();
 
     Modal.closeModal(modal);
+    title.value = '';
+    description.value = '';
+    priority.value = 'High';
+    dueDate.value = '';
+
+    UI.loadTasks();
+  }
+
+  static handleDeleteTaskEvent(event) {
+    const todoList = Storage.getTodoList();
+    const task = event.target.closest('.list-task');
+    const taskId = task.getAttribute('data-task-id');
+
+    const originalTask = todoList.findTask(taskId);
+    if (originalTask) {
+      const parentList = todoList.getList(originalTask.getParentList());
+      parentList.deleteTask(taskId); 
+    }
+    Storage.saveTodoList(todoList);
+    
+    UI.updateMainLists();
     UI.loadTasks();
   }
 
