@@ -33,6 +33,15 @@ export default class Todo {
     this.lists = this.lists.filter((list) => list.getName() !== listName);
   }
 
+  findTask(taskId) {
+    for (let list of this.lists) {
+      if (list.getName() !== 'All Tasks' && list.getName() !== 'Today' && list.getName() !== 'This week') {
+        const task = list.getTasks().find(task => task.id === taskId);
+        if(task) return task;
+      }
+    }
+  }
+
   updateTodayList() {
     let todayList = this.getList('Today');
     todayList.setTasks([]);
