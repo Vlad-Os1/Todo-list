@@ -68,12 +68,13 @@ export default class UI {
   
     tasks.forEach((task) => {
       UI.createTask(task.name, task.getFormattedDueDate(), task.getId());
+      UI.updateTaskStatus(task);
     });
 
     if (selectedListName !== 'All Tasks' && selectedListName !== 'Today' && selectedListName !== 'This week'){  
       UI.initAddTaskButton();
       Modal.init();
-    };
+    }
   }
 
   static createTask(taskName, taskDueDate, taskId) {
@@ -83,7 +84,7 @@ export default class UI {
     <div class="list-task" data-task-id="${taskId}">
       <div class="task-left-panel">
         <i class="task-check-btn"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg></i>
-        <p>${taskName}</p>
+        <p class="task-title">${taskName}</p>
       </div>
       <div class="task-right-panel">
         <p class="due-date">${taskDueDate}</p>
@@ -96,14 +97,27 @@ export default class UI {
   static loadDropdown(){
     let dropdownButtons = document.querySelectorAll('.dropdown');
     dropdownButtons.forEach((dropdown) => {
+      const dropdownContent = dropdown.nextElementSibling;
+      dropdownContent.style.overflowY = 'hidden';
+      
+      dropdownContent.addEventListener('transitionstart', () => {
+        if (!dropdownContent.classList.contains('active')) {
+          dropdownContent.style.overflowY = 'hidden';
+        }
+      });
+      dropdownContent.addEventListener('transitionend', () => {
+        if (dropdownContent.classList.contains('active')) {
+          dropdownContent.style.overflowY = 'auto';
+        }
+      });
+
       dropdown.addEventListener('click', () => {
-        const dropdownContent = dropdown.nextElementSibling;
         if (dropdownContent && dropdownContent.classList.contains('dropdown-content')) {
           UI.toggleDropdown(dropdownContent);
           dropdown.classList.toggle('active');
         }
-      })
-    })
+      });
+    });
   }
   
   static loadMenu(){
@@ -141,11 +155,16 @@ export default class UI {
     });
     // Add task event
     document.querySelector('#add-task-form').addEventListener('submit', UI.handleAddTaskEvent)
-    // Delete task event
+    // Delete task event & Toggle task checked event
     document.querySelector('.list-content').addEventListener('click', (event) => {
       const deleteTaskButton = event.target.closest('.close-task-btn');
       if (deleteTaskButton) {
         UI.handleDeleteTaskEvent(event);
+        return
+      }
+      const taskCheckBtn = event.target.closest('.task-check-btn');
+      if (taskCheckBtn) {
+        UI.toggleTaskChecked(event);
       }
     });
   }
@@ -323,6 +342,49 @@ export default class UI {
     Storage.updateWeekList();
   }
 
+  static toggleTaskChecked(event) {
+    const todoList = Storage.getTodoList();
+    const task = event.target.closest('.list-task');
+    const taskId = task.getAttribute('data-task-id');
+    
+    const originalTask = todoList.findTask(taskId);
+    originalTask?.setIsChecked(!originalTask.getIsChecked());
+
+    UI.updateTaskStatus(originalTask);
+    Storage.saveTodoList(todoList);
+    UI.updateMainLists();
+  }
+
+  static updateTaskStatus(originalTask) {
+    const originalTaskID = originalTask.getId();
+    const task = document.querySelector(`[data-task-id="${originalTaskID}"]`);
+    const taskLeftPanel = task.querySelector('.task-left-panel');
+    const taskRightPanel = task.querySelector('.task-right-panel');
+    
+    if(!taskLeftPanel || !taskRightPanel) {
+      console.error('Missing task panels');
+      return;
+    }
+    const taskCheckBtn = taskLeftPanel.querySelector('.task-check-btn');
+    const icon = taskCheckBtn.querySelector('svg');
+    const path = icon.querySelector('path');
+    const defaultPath = "M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z";
+    const pathWithCheck = "m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z";
+    const taskTitle = taskLeftPanel.querySelector('.task-title');
+    const taskDueDate = taskRightPanel.querySelector('.due-date');
+    const taskCloseBtn = taskRightPanel.querySelector('.close-task-btn');
+       
+    const elementsToUpdate = [task, taskCheckBtn, taskTitle, taskDueDate, taskCloseBtn];
+
+    if(originalTask.getIsChecked() === true) {
+      elementsToUpdate.forEach((el) => el?.classList.add('checked'));
+      path.setAttribute('d', pathWithCheck);
+    } else {
+      elementsToUpdate.forEach((el) => el?.classList.remove('checked'))
+      path.setAttribute('d', defaultPath);
+    }
+  }
+
   static initAddTaskButton() {
     const tasksContainer = document.querySelector('.list-content');
     const addTaskButton = document.createElement('button');
@@ -335,5 +397,4 @@ export default class UI {
     `;
     tasksContainer.after(addTaskButton);
   }
-
 }
