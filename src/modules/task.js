@@ -7,6 +7,7 @@ export default class Task {
     this.description = null;
     this.priority = 'low';
     this.parentList = null;
+    this.isChecked = false;
   }
 
   getName() {
@@ -40,6 +41,14 @@ export default class Task {
   getId() {
     return this.id
   }
+
+  setIsChecked(checkedStatus) {
+    return this.isChecked = checkedStatus;
+  }
+
+  getIsChecked() {
+    return this.isChecked;
+  } 
 
   getDueDate() {
     return this.dueDate;
