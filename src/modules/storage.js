@@ -5,7 +5,6 @@ import Task from './task.js'
 export default class Storage {
   static saveTodoList(data) {
     localStorage.setItem('todoList', JSON.stringify(data));
-    console.log(data);
   }
 
   static saveSelectedList(list) {
