@@ -19,7 +19,9 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `/* CSS reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 * {
@@ -30,24 +32,38 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
-#root, #__next {
+#root,
+#__next {
   isolation: isolate;
 }
 
 :root {
   --primary-color: rgb(0, 0, 0);
   --background-color: rgb(254, 254, 254);
-  --logo-icon-background-color:  rgb(139, 224, 139);
+  --logo-icon-background-color: rgb(139, 224, 139);
   --header-button-background-color-hover: rgb(236, 236, 236);
   --left-panel-background-color: rgb(247, 247, 247);
   --left-panel-button-background-color-hover: rgb(235, 235, 235);
@@ -71,7 +87,7 @@ body.dark-theme {
   --left-panel-button-background-color-hover: rgb(32, 32, 32);
   --selected-list-background-color: rgb(75, 75, 75);
   --right-panel-background-color: rgb(19, 19, 19);
-  --task-background-color-hover: rgb(32, 32, 32);;
+  --task-background-color-hover: rgb(32, 32, 32);
   --modal-background-color: rgb(20, 20, 20);
   --modal-error-msg-color: rgb(255, 70, 70);
 }
@@ -89,7 +105,10 @@ svg {
   fill: var(--primary-color);
 }
 
-h1, h2, p, span {
+h1,
+h2,
+p,
+span {
   color: var(--primary-color);
 }
 
@@ -110,10 +129,12 @@ h1, h2, p, span {
 }
 
 .header button:hover {
-  background-color:  var(--header-button-background-color-hover);
+  background-color: var(--header-button-background-color-hover);
 }
 
-.menu-toggle, #theme-toggle, .logo-icon{
+.menu-toggle,
+#theme-toggle,
+.logo-icon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -121,7 +142,7 @@ h1, h2, p, span {
   height: 50px;
 }
 
-.menu-toggle svg path{
+.menu-toggle svg path {
   stroke: var(--primary-color);
 }
 
@@ -171,7 +192,6 @@ h1, h2, p, span {
   flex-basis: max(20%, 230px);
 }
 
-
 .left-panel-content {
   padding: 2rem 0.5rem 0 2rem;
   font-weight: 300;
@@ -181,12 +201,17 @@ h1, h2, p, span {
   background-color: var(--left-panel-button-background-color-hover);
 }
 
-.main-lists-section, .user-lists-section, .dropdown-content, .list-content, .user-lists{
+.main-lists-section,
+.user-lists-section,
+.dropdown-content,
+.list-content,
+.user-lists {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 }
 
-.main-lists-section button, .user-lists-section button {
+.main-lists-section button,
+.user-lists-section button {
   display: flex;
   min-width: 170px;
   font-size: 1.25rem;
@@ -194,19 +219,27 @@ h1, h2, p, span {
   align-items: center;
 }
 
-.main-lists-section button span, .user-lists-section button span {
+.main-lists-section button span,
+.user-lists-section button span {
   margin-left: 7px;
 }
 
-.main-list svg, .main-list span, .user-list svg, .user-list span, .close-task-btn svg, .task-check-btn svg {
+.main-list svg,
+.main-list span,
+.user-list svg,
+.user-list span,
+.close-task-btn svg,
+.task-check-btn svg {
   pointer-events: none;
 }
 
-.main-list.selected, .user-list.selected {
+.main-list.selected,
+.user-list.selected {
   background-color: var(--selected-list-background-color);
 }
 
-.main-list.selected:hover, .user-list.selected:hover {
+.main-list.selected:hover,
+.user-list.selected:hover {
   background-color: var(--selected-list-background-color);
 }
 
@@ -231,7 +264,7 @@ h1, h2, p, span {
   max-height: 500px;
 }
 
-.user-list{
+.user-list {
   word-break: break-all;
 }
 
@@ -240,7 +273,7 @@ h1, h2, p, span {
   margin-left: auto;
 }
 
-.delete-list svg  {
+.delete-list svg {
   min-width: 24px;
   min-height: 24px;
 }
@@ -264,7 +297,8 @@ h1, h2, p, span {
   width: min(900px, 100%);
 }
 
-.list-content, .add-task-button{
+.list-content,
+.add-task-button {
   font-weight: 300;
 }
 
@@ -275,7 +309,8 @@ h1, h2, p, span {
   justify-content: space-between;
 }
 
-.list-task:hover, .add-task-button:hover {
+.list-task:hover,
+.add-task-button:hover {
   background-color: var(--task-background-color-hover);
 }
 
@@ -284,15 +319,17 @@ h1, h2, p, span {
   min-width: 30px;
 }
 
-
-.task-left-panel, .task-right-panel, .add-task-button{
+.task-left-panel,
+.task-right-panel,
+.add-task-button {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 1.25rem;
 }
 
-.task-check-btn, .close-task-btn {
+.task-check-btn,
+.close-task-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -340,10 +377,11 @@ h1, h2, p, span {
   gap: 15px;
 }
 
-.modal-form input, .modal-form select {
+.modal-form input,
+.modal-form select {
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #cacaca ;
+  border: 1px solid #cacaca;
   outline: none;
   color: var(--primary-color);
   background-color: var(--background-color);
@@ -370,8 +408,6 @@ h1, h2, p, span {
   border: 1px solid var(--primary-color);
 }
 
-
-
 #overlay {
   position: fixed;
   opacity: 0;
@@ -380,7 +416,7 @@ h1, h2, p, span {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
   pointer-events: none;
   z-index: 10;
 }
@@ -390,14 +426,21 @@ h1, h2, p, span {
   pointer-events: all;
 }
 
-@media(max-width: 570px) {
+@media (max-width: 570px) {
   .content {
     flex-direction: column;
   }
-  
+
+  .left-panel {
+    max-height: 0;
+    flex-basis: 100%;
+    transition: flex-basis 400ms ease-out, max-height 400ms ease-out;
+  }
+
   .left-panel.active {
+    max-height: 100vh;
     flex-basis: auto;
-  } 
+  }
 
   .list-task {
     gap: 20px;
